@@ -28,8 +28,7 @@ public class Citra {
     }
 
     public static void mtxToImg(int[][] mtx)throws IOException{
-        BufferedImage image = new BufferedImage(
-            mtx.length, mtx[0].length, BufferedImage.TYPE_BYTE_GRAY); 
+        BufferedImage image = new BufferedImage(mtx.length, mtx[0].length, BufferedImage.TYPE_BYTE_GRAY); 
         for(int i=0; i<mtx.length; i++) {
             for(int j=0; j<mtx[0].length; j++) {
                 int a = mtx[i][j];
