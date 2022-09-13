@@ -10,7 +10,7 @@ public class App {
         //int[][] mtxImg2 = converter.Citra.imgToMtx(file2);
         int[][] imgRes = new int[mtxImg.length][mtxImg[0].length];
 
-        computing_level.PointLevel.biner(mtxImg, imgRes, 128, mtxImg.length, mtxImg[0].length);
+        //computing_level.PointLevel.biner(mtxImg, imgRes, 128, mtxImg.length, mtxImg[0].length);
         //computing_level.PointLevel.negatif(mtxImg, imgRes, mtxImg.length, mtxImg[0].length);
         //computing_level.PointLevel.brightening(mtxImg, 2, imgRes, mtxImg.length, mtxImg[0].length);
         
