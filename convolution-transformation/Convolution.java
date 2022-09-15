@@ -5,37 +5,50 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Convolution{
-    public static void main(String[] args) {
-        int[][] Image = {
-            {4,4,6,8,10,11},
-            {4,6,15,9,9,10},
-            {12,13,1,0,0,2},
-            {7,7,8,10,12,12},
-            {12,11,9,0,0,6},
-            {8,8,8,10,0,9}
-        };
-        int[][] ImageResult = new int[4][4];
-        int[][] Mask = {
-            {1,2,1},
-            {2,4,2},
-            {1,2,1}
-        };
+    public static void main(String[] args) throws IOException {
+        // int[][] Image = {
+        //     {4,4,6,8,10,11},
+        //     {4,6,15,9,9,10},
+        //     {12,13,1,0,0,2},
+        //     {7,7,8,10,12,12},
+        //     {12,11,9,0,0,6},
+        //     {8,8,8,10,0,9}
+        // };
+        // int[][] ImageResult = new int[4][4];
+        // int[][] Mask = {
+        //     {1,2,1},
+        //     {2,4,2},
+        //     {1,2,1}
+        // };
+
+        File file = new File("input.jpg");
+        int[][] mtxImg = imgToMtx(file);
+        int[][] imgRes = new int[mtxImg.length-2][mtxImg[0].length-2];
+        int[][] sharpening = {
+                {0,-1,0},
+                {-1,5,-1},
+                {0,-1,0}
+            };
+
+        convolution(mtxImg, sharpening, imgRes);
+
+        mtxToImg(imgRes);
 
         //konvolusi(Image, ImageResult, Mask, 6, 6);
-        convolution(Image, Mask, ImageResult);
+        //convolution(Image, Mask, ImageResult);
 
-        for(int i = 0; i < ImageResult.length; i++){
-            for(int j = 0; j < ImageResult[0].length; j++){
-                if(ImageResult[i][j]/10 == 0){
-                    System.out.print("  ");
-                }
-                else if(ImageResult[i][j]/100 == 0){
-                    System.out.print(" ");
-                }
-                System.out.print(ImageResult[i][j] + "  ");
-            }
-            System.out.println();
-        }
+        // for(int i = 0; i < ImageResult.length; i++){
+        //     for(int j = 0; j < ImageResult[0].length; j++){
+        //         if(ImageResult[i][j]/10 == 0){
+        //             System.out.print("  ");
+        //         }
+        //         else if(ImageResult[i][j]/100 == 0){
+        //             System.out.print(" ");
+        //         }
+        //         System.out.print(ImageResult[i][j] + "  ");
+        //     }
+        //     System.out.println();
+        // }
     }
 
     public static void konvolusi(int[][] Image, int[][] ImageResult, int[][] Mask, int N, int M){ 
@@ -108,11 +121,13 @@ public class Convolution{
         for(int i=0; i<mtx.length; i++) {
             for(int j=0; j<mtx[0].length; j++) {
                 int a = mtx[i][j];
+                if(a > 255) a = 255;
+                else if(a < 0) a = 0;
                 Color newColor = new Color(a,a,a);
                 image.setRGB(j,i,newColor.getRGB());
             }
         }
-        File output = new File("../output/export.jpg");
+        File output = new File("output.jpg");
         ImageIO.write(image, "jpg", output);
     }
 }
