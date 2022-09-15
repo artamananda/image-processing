@@ -15,7 +15,8 @@ public class Convolution{
             {1,2,1}
         };
 
-        konvolusi(Image, ImageResult, Mask, 6, 6);
+        //konvolusi(Image, ImageResult, Mask, 6, 6);
+        convolution(Image, Mask, ImageResult);
 
         for(int i = 0; i < ImageResult.length; i++){
             for(int j = 0; j < ImageResult[0].length; j++){
@@ -48,5 +49,31 @@ public class Convolution{
                     Image[i+1][j-1]*Mask[2][0] +
                     Image[i+1][j]*Mask[2][1] +
                     Image[i+1][j+1]*Mask[2][2];
+    }
+
+    public static void convolution(int[][] a, int[][] b, int[][] c){
+        int penampung = 0;
+        for (int i = 1; i < a.length-1; i++) {
+			for (int j = 1; j < a[0].length-1; j++) {
+				penampung = 0;
+				int bx =0;
+				int by =0;
+				for (int i2 = i-1; i2 <= i+1; i2++) {
+					for (int j2 = j-1; j2 <= j+1; j2++) {
+						penampung+= (a[i2][j2]*b[bx][by]);
+						bx++;
+						if(bx>2) {
+							bx=0;
+							by++;
+						}
+					}
+					if(by>2) {
+						by=0;
+					}
+				}
+				c[i-1][j-1] = penampung;
+			}
+			
+		}
     }
 }
