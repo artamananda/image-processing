@@ -4,19 +4,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Sharpening {
+public class Denoiser {
     public static void main(String[] args) throws IOException {
         File file = new File("../input.jpg");
         int[][] mtxImg = imgToMtx(file);
         int[][] imgRes = new int[mtxImg.length-2][mtxImg[0].length-2];
 
-        int[][] sharpening = {
-            {0,-1,0},
-            {-1,5,-1},
-            {0,-1,0}
+        int[][] blur = {
+            {1,2,1},
+            {2,4,2},
+            {1,2,1}
         };
 
-        konvolusi(mtxImg, imgRes, sharpening, mtxImg.length, mtxImg[0].length);
+        konvolusi(mtxImg, imgRes, blur, mtxImg.length, mtxImg[0].length);
         mtxToImg(imgRes);
     }
 
