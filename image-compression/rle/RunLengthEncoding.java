@@ -31,7 +31,6 @@ public class RunLengthEncoding {
             }
         }
         res = Arrays.copyOf(res, max);
-
         for(int i = 0; i < res.length; i++){
             if(res[i].length < max){
                 int d = (res[i].length / (max - res[i].length));
@@ -47,9 +46,7 @@ public class RunLengthEncoding {
                     }
                     
                 }
-                
                 res[i] = Arrays.copyOf(temp, temp.length);
-                
                 if(res[i].length < max){
                     for(int j = res[i].length-1; j < max-1; j++){
                         res[i] = Arrays.copyOf(res[i], res[i].length+1);
