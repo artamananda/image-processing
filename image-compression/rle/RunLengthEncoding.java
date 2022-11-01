@@ -44,7 +44,6 @@ public class RunLengthEncoding {
                             c++;
                         }
                     }
-                    
                 }
                 res[i] = Arrays.copyOf(temp, temp.length);
                 if(res[i].length < max){
