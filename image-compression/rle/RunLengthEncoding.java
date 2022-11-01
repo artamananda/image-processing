@@ -3,49 +3,53 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
-public class Sharpening {
+public class RunLengthEncoding {
     public static void main(String[] args) throws IOException {
         File file = new File("../input.jpg");
         int[][] mtxImg = imgToMtx(file);
-        int[][] imgRes = new int[mtxImg.length-2][mtxImg[0].length-2];
+        int[][] imgRes = rle(mtxImg);
 
-        int[][] sharpening = {
-            {0,-1,0},
-            {-1,5,-1},
-            {0,-1,0}
-        };
-
-        konvolusi(mtxImg, imgRes, sharpening, mtxImg.length, mtxImg[0].length);
         mtxToImg(imgRes);
     }
 
-    public static void konvolusi(int[][] Image, int[][] ImageResult, int[][] Mask,int N, int M){
-        //Mengkonvolusi citra Image yang berukuran N M dengan mask 3 - 3 .
-        // Hasil konvolusi disimpan di dalam matriks ImageResult .
-        int pembagi = 0;
-        for (int i = 0; i < Mask.length; i++) {
-            for (int j = 0; j < Mask[0].length; j++) {
-                pembagi += Mask[i][j];
+    public static int[][] rle(int[][] mtxImg){
+        int[][] res = {{}};
+        int[][] addArr = {{}};
+        int max = 0;
+        for(int i = 0; i < mtxImg.length; i++){
+            for(int j = 0; j < mtxImg[i].length-1; j++){
+                if(mtxImg[i][j] != mtxImg[i][j+1]){
+                    res[i] = Arrays.copyOf(res[i], res[i].length+1);
+                    res[i][res[i].length-1] = mtxImg[i][j];
+                }
+            }
+            if(res[i].length > max) max = res[i].length;
+            if(i < mtxImg.length-1){
+                res = append(res, addArr);
             }
         }
+        res = Arrays.copyOf(res, max);
 
-        int i, j;
-        for (i = 1; i < N - 2; i++) {
-            for (j = 1; j < M - 2; j++) {
-                ImageResult[i][j] =
-                        ((Image[i - 1][j - 1] * Mask[0][0]) +
-                                (Image[i - 1][j] * Mask[0][1]) +
-                                (Image[i - 1][j + 1] * Mask[0][2]) +
-                                (Image[i][j - 1] * Mask[1][0]) +
-                                (Image[i][j] * Mask[1][1]) +
-                                (Image[i][j + 1] * Mask[1][2]) +
-                                (Image[i + 1][j - 1] * Mask[2][0]) +
-                                (Image[i + 1][j] * Mask[2][1]) +
-                                (Image[i + 1][j + 1] * Mask[2][2]))/pembagi;
+        for(int i = 0; i < res.length; i++){    
+            if(res[i].length < max){
+                for(int j = res[i].length-1; j < max-1; j++){
+                    res[i] = Arrays.copyOf(res[i], res[i].length+1);
+                    res[i][res[i].length-1] = 0;
+                }   
             }
+            System.out.println(res[i].length);
         }
 
+        return res;
+    }
+
+    public static int[][] append(int[][] a, int[][] b) {
+        int[][] result = new int[a.length + b.length][];
+        System.arraycopy(a, 0, result, 0, a.length);
+        System.arraycopy(b, 0, result, a.length, b.length);
+        return result;
     }
 
     public static int[][] imgToMtx(File file)throws IOException {
@@ -71,7 +75,7 @@ public class Sharpening {
     public static void mtxToImg(int[][] mtx)throws IOException{
         BufferedImage image = new BufferedImage(mtx.length, mtx[0].length, BufferedImage.TYPE_BYTE_GRAY);
         for(int i=0; i<mtx.length; i++) {
-            for(int j=0; j<mtx[0].length; j++) {
+            for(int j=0; j<mtx[i].length; j++) {
                 int a = mtx[i][j];
                 if(a > 255) a = 255;
                 else if(a < 0) a = 0;
