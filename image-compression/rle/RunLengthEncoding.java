@@ -34,13 +34,33 @@ public class RunLengthEncoding {
 
         for(int i = 0; i < res.length; i++){
             if(res[i].length < max){
-                for(int j = res[i].length-1; j < max-1; j++){
-                    res[i] = Arrays.copyOf(res[i], res[i].length+1);
-                    res[i][res[i].length-1] = 0;
-                }   
+                int d = (res[i].length / (max - res[i].length));
+                int c = 0;
+                int[] temp = new int[max];
+                for(int j = 0; j < res[i].length; j++){
+                    if(j % d == 0){
+                        for(int k = 0; k < d+1; k++){
+                            if(c == max)break;
+                            temp[c] = res[i][j];
+                            c++;
+                        }
+                    }
+                    
+                }
+                
+                res[i] = Arrays.copyOf(temp, temp.length);
+                
+                if(res[i].length < max){
+                    for(int j = res[i].length-1; j < max-1; j++){
+                        res[i] = Arrays.copyOf(res[i], res[i].length+1);
+                        res[i][res[i].length-1] = 0;
+                    }
+                }
             }
-            System.out.println(res[i].length);
         }
+        System.out.printf("Before Compress\t\t: %d x %d\n",mtxImg.length, mtxImg[0].length);
+        System.out.printf("After Compress\t\t: %d x %d\n",res.length, res[0].length);
+        System.out.printf("Compressing Ratio\t: %.2f%%\n",100d-((double)res.length/(double)mtxImg.length*100d));
 
         return res;
     }
