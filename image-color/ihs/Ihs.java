@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Ihs {
     public static void main(String[] args) throws IOException {
@@ -22,17 +23,19 @@ public class Ihs {
         int i, j;
         for (i=0; i<=N-1; i++)
             for (j=0; j<=M-1; j++){
+                int[] arr = {r[i][j], g[i][j], b[i][j]};
+                Arrays.sort(arr);
                 I[i][j] = (r[i][j] + g[i][j] + b[i][j])/3;
                 
-                if(I[i][j] > 0)
-                    H[i][j] = 0;
+                if(I[i][j] > 0 && arr[0] > 0)
+                    S[i][j] = 1-((3/r[i][j]+g[i][j]+b[i][j])*arr[0]);
                 else
-                    H[i][j] = 0;
+                    S[i][j] = 0;
 
                 if(g[i][j] >= b[i][j])
-                    S[i][j] = 0;
+                    H[i][j] = (int)Math.acos(2*r[i][j]-g[i][j]-b[i][j]/2*Math.sqrt(Math.pow(r[i][j]-g[i][j], 2)+(r[i][j]-b[i][j])*(g[i][j]-b[i][j])));
                 else
-                    S[i][j] = 0;
+                    H[i][j] = 360 - (int)Math.acos(2*r[i][j]-g[i][j]-b[i][j]/2*Math.sqrt(Math.pow(r[i][j]-g[i][j], 2)+(r[i][j]-b[i][j])*(g[i][j]-b[i][j])));
             }
 
         mtxToImg(I, H, S);
