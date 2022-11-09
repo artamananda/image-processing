@@ -10,8 +10,8 @@ public class Xyz {
         int[][] mtxImgRed = imgToMtxRed(file);
         int[][] mtxImgGreen = imgToMtxGreen(file);
         int[][] mtxImgBlue = imgToMtxBlue(file);
-        //cieRGB_toXYZ(mtxImgRed, mtxImgGreen, mtxImgBlue);
-        XYZ_to_cieRGB(mtxImgRed, mtxImgGreen, mtxImgBlue);
+        cieRGB_toXYZ(mtxImgRed, mtxImgGreen, mtxImgBlue);
+        //XYZ_to_cieRGB(mtxImgRed, mtxImgGreen, mtxImgBlue);
     }
 
     public static void cieRGB_toXYZ(int[][] r, int[][] g, int[][] b) throws IOException{
@@ -128,7 +128,7 @@ public class Xyz {
     }
 
     public static void mtxToImg(int[][] r, int[][] g, int[][] b)throws IOException{
-        BufferedImage image = new BufferedImage(r.length, r[0].length, BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage image = new BufferedImage(r.length, r[0].length, BufferedImage.TYPE_INT_RGB);
         for(int i=0; i<r.length; i++) {
             for(int j=0; j<r[i].length; j++) {
                 int x = r[i][j];
